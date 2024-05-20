@@ -46,8 +46,7 @@ public class ConfigModule {
     @JsonIgnore
     private List<ConfigSubModule> subModuleList;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "organization_id", referencedColumnName = "id")
+    @ManyToOne
     private Organization organization;
 
 

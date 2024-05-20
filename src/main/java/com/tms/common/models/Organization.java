@@ -18,7 +18,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "organizations")
-public class Organization extends AbstractDomainBasedEntity implements IDto {
+public class Organization  {
+
+    @Id
+    @Column(name = "id")
+    private Long id;
 
     @OrderBy
     @Column(name = "org_ref", nullable = false)
@@ -46,8 +50,8 @@ public class Organization extends AbstractDomainBasedEntity implements IDto {
     @Column(name = "email_address")
     private String emailAddress;
 
-    @Column(name = "active_status")
-    private boolean activeStatus = true;
+    @Column(name = "is_active", columnDefinition="boolean default true", nullable = false)
+    private Boolean isActive = true;
 
     @Column(name = "IS_ADMIN_CONSOLE")
     private boolean adminConsole;

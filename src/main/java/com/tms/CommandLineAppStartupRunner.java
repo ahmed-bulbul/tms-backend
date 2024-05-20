@@ -11,6 +11,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -36,6 +42,10 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+
+
+
+
 
         createRole(ERole.ROLE_SUPER_ADMIN,1);
         createRole(ERole.ROLE_USER,2);

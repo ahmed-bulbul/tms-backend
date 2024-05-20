@@ -21,38 +21,38 @@ import java.util.Set;
 import static io.jsonwebtoken.lang.Strings.capitalize;
 import static org.apache.logging.log4j.util.Chars.SPACE;
 
+import org.springframework.security.authentication.BadCredentialsException;
+
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(Exception.class)
-    public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
-        ApiError apiError = new ApiError();
-        AppError engineeringManagementError =
-                new AppError(ErrorId.SYSTEM_ERROR, ex.getLocalizedMessage());
-        apiError.addError(engineeringManagementError);
-        ex.printStackTrace();
-        return new ResponseEntity(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+//    @ExceptionHandler(Exception.class)
+//    public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
+//        ApiError apiError = new ApiError();
+//        AppError engineeringManagementError =
+//                new AppError(ErrorId.SYSTEM_ERROR, ex.getLocalizedMessage());
+//        apiError.addError(engineeringManagementError);
+//        ex.printStackTrace();
+//        return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public final ResponseEntity<Object>
-    handleConstraintViolationExceptionAllException(ConstraintViolationException ex, WebRequest request) {
+    public final ResponseEntity<Object> handleConstraintViolationExceptionAllException(ConstraintViolationException ex, WebRequest request) {
         ApiError apiError = new ApiError();
         Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
         violations.forEach(violation -> {
             AppError reservationError = getEngineeringManagementError(violation.getMessageTemplate());
             apiError.addError(reservationError);
         });
-        return new ResponseEntity(apiError, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(AppServerException.class)
-    public final ResponseEntity<Object> handleEngineeringManagementServerException(
-            AppServerException ex, WebRequest request) {
+    public final ResponseEntity<Object> handleEngineeringManagementServerException(AppServerException ex, WebRequest request) {
         ApiError apiError = new ApiError();
         AppError reservationError = getEngineeringManagementError(ex.getErrorId());
         apiError.addError(reservationError);
-        return new ResponseEntity(apiError, ex.getStatus());
+        return new ResponseEntity<>(apiError, ex.getStatus());
     }
 
 
@@ -74,8 +74,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     private String buildErrorMessage(FieldError error) {
-        return capitalize(StringUtils.join(splitByCharacterTypeCamelCase(emptyFieldErrorIfNull(error)
-        ), SPACE)) + SPACE + error.getDefaultMessage();
+        return capitalize(StringUtils.join(splitByCharacterTypeCamelCase(emptyFieldErrorIfNull(error)), SPACE)) + SPACE + error.getDefaultMessage();
     }
 
     private String emptyFieldErrorIfNull(FieldError fieldError) {

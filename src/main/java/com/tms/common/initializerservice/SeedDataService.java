@@ -108,6 +108,7 @@ public class SeedDataService {
     }
 
     private static Organization createRootOrg(OrganizationTypeEnum organizationTypeEnum) {
+        System.out.println("ID::_"+OrganizationTypeEnum.ROOT_ORG.getOrgId());
         Organization organization = new Organization();
         organization.setId(OrganizationTypeEnum.ROOT_ORG.getOrgId());
         organization.setOrgCode("ATL");
@@ -133,7 +134,14 @@ public class SeedDataService {
         module.setModuleName(moduleEnum.name());
         module.setOrder(moduleEnum.ordinal() + 1);
         module.setId(moduleEnum.getConfigModuleId());
-        module.setOrganization(organizationService.findById(OrganizationTypeEnum.ROOT_ORG.getOrgId()));
+
+        Organization org = organizationService.findById(OrganizationTypeEnum.ROOT_ORG.getOrgId());
+        if (org!=null){
+            module.setOrganization(org);
+        }else{
+            System.out.println("Not found Org");
+        }
+
         return module;
     }
     private ConfigSubModule buildSubModule(SubModuleEnum subModuleEnum) {
