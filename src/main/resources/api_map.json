@@ -1,0 +1,17 @@
+{
+  "/api/user/post" : "140",
+  "/api/user/put" : "141",
+  "/api/user/patch" : "141",
+  "/api/user/delete" : "142",
+  "/api/user/get" : "143",
+  "/api/user/search/post" : "143",
+
+  "/api/role/post" : "144",
+  "/api/role/get" : "145",
+  "/api/role/delete" : "146",
+  "/api/role/search/post" : "147",
+
+  "/api/location/post": "148"
+
+
+}

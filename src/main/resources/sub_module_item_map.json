@@ -1,0 +1,23 @@
+[
+  {
+    "table": "store_scraps",
+    "smiId": 50023,
+    "uris": [
+      "/api/store/scraps",
+      "/api/store/scraps/decide/{id}",
+      "/api/store/scraps/{id}",
+      "/api/store/scraps/search"
+    ]
+  },
+
+  {
+    "table": "locations",
+    "smiId": 50012,
+    "uris": [
+      "/api/location",
+      "/api/location/decide/{id}",
+      "/api/location/{id}",
+      "/api/location/search"
+    ]
+  }
+]
