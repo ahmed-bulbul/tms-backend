@@ -64,7 +64,7 @@ public class SeedDataService {
 
     @EventListener
     public void postConstruct(ApplicationStartedEvent event) {
-        organizationService.saveItemList(Collections.singletonList(buildOrganization(OrganizationTypeEnum.ROOT_ORG)));
+        organizationService.saveItemList(buildOrganization(OrganizationTypeEnum.ROOT_ORG));
         moduleService.saveItemList(getConfigModuleList());
         subModuleService.saveItemList(getConfigSubModuleList());
         configSubmoduleItemService.saveItemList(getConfigSubModuleItemList());
@@ -102,14 +102,29 @@ public class SeedDataService {
         }
     }
 
-    private Organization buildOrganization(OrganizationTypeEnum organizationTypeEnum) {
+    private List<Organization> buildOrganization(OrganizationTypeEnum organizationTypeEnum) {
+        return Arrays.asList(createRootOrg(organizationTypeEnum),
+                createSubOrg(organizationTypeEnum));
+    }
+
+    private static Organization createRootOrg(OrganizationTypeEnum organizationTypeEnum) {
         Organization organization = new Organization();
-        organization.setId(organizationTypeEnum.getOrgId());
+        organization.setId(OrganizationTypeEnum.ROOT_ORG.getOrgId());
         organization.setOrgCode("ATL");
         organization.setReference("ATL");
-        organization.setOrganizationType(organizationTypeEnum);
+        organization.setOrganizationType(OrganizationTypeEnum.ROOT_ORG);
         organization.setName("ATL");
         organization.setContactName("ATL");
+        return organization;
+    }
+    private static Organization createSubOrg(OrganizationTypeEnum organizationTypeEnum) {
+        Organization organization = new Organization();
+        organization.setId(OrganizationTypeEnum.SUB_ORG.getOrgId());
+        organization.setOrgCode("ATL-1");
+        organization.setReference("ATL-1");
+        organization.setOrganizationType(OrganizationTypeEnum.SUB_ORG);
+        organization.setName("ATL-1");
+        organization.setContactName("ATL-1");
         return organization;
     }
 
