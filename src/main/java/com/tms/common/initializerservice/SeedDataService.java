@@ -134,14 +134,8 @@ public class SeedDataService {
         module.setModuleName(moduleEnum.name());
         module.setOrder(moduleEnum.ordinal() + 1);
         module.setId(moduleEnum.getConfigModuleId());
-
         Organization org = organizationService.findById(OrganizationTypeEnum.ROOT_ORG.getOrgId());
-        if (org!=null){
-            module.setOrganization(org);
-        }else{
-            System.out.println("Not found Org");
-        }
-
+        module.setOrganization(org);
         return module;
     }
     private ConfigSubModule buildSubModule(SubModuleEnum subModuleEnum) {
