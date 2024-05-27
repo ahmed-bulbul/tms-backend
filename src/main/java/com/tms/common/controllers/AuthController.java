@@ -88,14 +88,17 @@ public class AuthController {
       featureRoleViewModelList.add(featureRoleService.featuresByRoleId(Long.valueOf(roleId)));
     }
 
+    Map<Integer,String> roleMap = new HashMap<>();
+    userDetails.getRoleIds().forEach(roleId->{
+      Role r = roleService.findById(roleId);
+      roleMap.put(roleId,r.getName().name());
+    });
+
     return ResponseEntity.ok(new JwtResponse(jwt,
             userDetails.getId(),
             userDetails.getUsername(),
             userDetails.getEmail(),
-            userDetails.getRoleIds(),
-            moduleViewModelList,
-            userAccessPermissions,
-            featureRoleViewModelList));
+            roleMap));
   }
 
   @PostMapping("/signup")
