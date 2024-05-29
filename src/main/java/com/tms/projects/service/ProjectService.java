@@ -58,13 +58,23 @@ public class ProjectService  extends AbstractSearchService<Project, ProjectReque
 
     @Override
     protected Project updateEntity(ProjectRequestDto dto, Project entity) {
-        return null;
+        entity.setName(dto.getName());
+        entity.setDescription(dto.getDescription());
+        entity.setCategory(CategoryEnum.byId(dto.getCategory().getCategoryTypeId()));
+        entity.setStartDate(dto.getStartDate());
+        entity.setEndDate(dto.getEndDate());
+        entity.setProjectManager(User.builder().id(dto.getManagerId()).build());
+        entity.setTeamMembers(dto.getTeamMembers().stream()
+                .map(userId -> User.builder().id(userId).build())
+                .collect(Collectors.toSet()));
+        return entity;
     }
 
     public static UserResponseDto buildManager(Project project) {
         return UserResponseDto.builder()
                 .id(project.getProjectManager().getId())
                 .username(project.getProjectManager().getUsername())
+                .email(project.getProjectManager().getEmail())
                 .build();
     }
 
@@ -73,6 +83,7 @@ public class ProjectService  extends AbstractSearchService<Project, ProjectReque
                 .map(user -> UserResponseDto.builder()
                         .id(user.getId())
                         .username(user.getUsername())
+                        .email(user.getEmail())
                         .build())
                 .collect(Collectors.toSet());
     }
