@@ -137,9 +137,10 @@ public class RequestHandlingInterceptor implements HandlerInterceptor {
         }
 
         if (!accessRightSet.contains(accessRightId)) {
-            throw new AppServerException(
-                    ErrorId.INVALID_ACCESS_PERMISSION, HttpStatus.BAD_REQUEST, MDC.get(ApplicationConstant.TRACE_ID)
-            );
+//            throw new AppServerException(
+//                    ErrorId.INVALID_ACCESS_PERMISSION, HttpStatus.BAD_REQUEST, MDC.get(ApplicationConstant.TRACE_ID)
+//            );
+
         }
 
     }
