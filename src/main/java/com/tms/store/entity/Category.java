@@ -13,6 +13,7 @@ import lombok.*;
 @NoArgsConstructor
 @Table(name = "category")
 public class Category  extends AbstractDomainBasedEntity {
+    private long id;
     private String name;
     private String Description;
 }

@@ -6,13 +6,13 @@ import com.tms.common.util.Helper;
 import com.tms.common.util.WorkFlowUtil;
 import com.tms.configuaration.service.ApprovalStatusService;
 import com.tms.configuaration.service.WorkFlowActionService;
-import com.tms.store.dto.request.LocationRequestDto;
-import com.tms.store.dto.search.LocationSearchDto;
-import com.tms.store.entity.Location;
+import com.tms.projects.dto.CategoryRequestDto;
+import com.tms.projects.dto.CategorySearchDto;
+import com.tms.store.entity.Category;
 import com.tms.store.repository.LocationRepository;
 import org.springframework.data.jpa.domain.Specification;
 
-public class CategoryService extends AbstractSearchService<Location, LocationRequestDto, LocationSearchDto> {
+public class CategoryService extends AbstractSearchService<Category, CategoryRequestDto, CategorySearchDto> {
 
     private final WorkFlowActionService workFlowActionService;
     private final WorkFlowUtil workFlowUtil;
@@ -21,7 +21,7 @@ public class CategoryService extends AbstractSearchService<Location, LocationReq
 
     private final LocationRepository locationRepository;
 
-    public CategoryService(AbstractRepository<Location> repository, WorkFlowActionService workFlowActionService,
+    public CategoryService(AbstractRepository<Category> repository, WorkFlowActionService workFlowActionService,
                            WorkFlowUtil workFlowUtil, Helper helper, ApprovalStatusService approvalStatusService, LocationRepository locationRepository) {
         super(repository);
         this.workFlowActionService = workFlowActionService;
@@ -31,23 +31,24 @@ public class CategoryService extends AbstractSearchService<Location, LocationReq
         this.locationRepository = locationRepository;
     }
 
-    @java.lang.Override
-    protected Specification<Location> buildSpecification(LocationSearchDto searchDto) {
+
+    @Override
+    protected Specification<Category> buildSpecification(CategorySearchDto searchDto) {
         return null;
     }
 
-    @java.lang.Override
-    protected <T> T convertToResponseDto(Location location) {
+    @Override
+    protected <T> T convertToResponseDto(Category category) {
         return null;
     }
 
-    @java.lang.Override
-    protected Location convertToEntity(LocationRequestDto locationRequestDto) {
+    @Override
+    protected Category convertToEntity(CategoryRequestDto categoryRequestDto) {
         return null;
     }
 
-    @java.lang.Override
-    protected Location updateEntity(LocationRequestDto dto, Location entity) {
+    @Override
+    protected Category updateEntity(CategoryRequestDto dto, Category entity) {
         return null;
     }
 }
