@@ -1,8 +1,8 @@
 package com.tms;
 
+import com.tms.categories.entity.Category;
+import com.tms.categories.repository.CategoryRepository;
 import com.tms.common.constant.ERole;
-import com.tms.common.models.Organization;
-import com.tms.common.models.OrganizationTypeEnum;
 import com.tms.common.models.Role;
 import com.tms.common.models.User;
 import com.tms.common.repository.OrganizationRepository;
@@ -30,14 +30,17 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 
     private final OrganizationRepository organizationRepository;
 
+    private final CategoryRepository categoryRepository;
 
 
-    public CommandLineAppStartupRunner(RoleRepository roleRepository, UserRepository userRepository, WorkFlowActionRepository workFlowActionRepository, PasswordEncoder encoder, OrganizationRepository organizationRepository) {
+
+    public CommandLineAppStartupRunner(RoleRepository roleRepository, UserRepository userRepository, WorkFlowActionRepository workFlowActionRepository, PasswordEncoder encoder, OrganizationRepository organizationRepository, CategoryRepository categoryRepository) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.workFlowActionRepository = workFlowActionRepository;
         this.encoder = encoder;
         this.organizationRepository = organizationRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
@@ -54,8 +57,18 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
         createWorkFlowActions("REVIEW",1,true,"Reviewed By",true);
         createWorkFlowActions("APPROVED",32768,false,"Created By",true);
 
+        createCategory("Web Development",1L);
+        createCategory("Desktop Application",2L);
+        createCategory("Mobile Application",3L);
+
     }
 
+    private void createCategory(String name, Long id) {
+        Category category = new Category();
+        category.setId(id);
+        category.setName(name);
+        categoryRepository.save(category);
+    }
 
 
     private void createUser(String username, String email, String password,ERole roleName) {

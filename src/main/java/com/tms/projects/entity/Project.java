@@ -1,5 +1,6 @@
 package com.tms.projects.entity;
 
+import com.tms.categories.entity.Category;
 import com.tms.common.generics.AbstractDomainBasedEntity;
 import com.tms.common.models.Organization;
 import com.tms.common.models.User;
@@ -24,8 +25,9 @@ public class Project extends AbstractDomainBasedEntity {
     @Column(name = "description", length = 500)
     private String description;
 
-    @Column(name = "category", nullable = false)
-    private CategoryEnum category;
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 
     @Column(name = "start_date")
     private LocalDate startDate;

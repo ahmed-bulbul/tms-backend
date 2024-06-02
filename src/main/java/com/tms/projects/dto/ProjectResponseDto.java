@@ -1,7 +1,6 @@
 package com.tms.projects.dto;
 
 import com.tms.common.payload.response.UserResponseDto;
-import com.tms.projects.entity.CategoryEnum;
 import lombok.Builder;
 import lombok.Data;
 
@@ -15,6 +14,7 @@ public class ProjectResponseDto {
     private String name;
     private String description;
     private String category;
+    private Long categoryId;
     private LocalDate startDate;
     private LocalDate endDate;
     private UserResponseDto manager;
