@@ -18,6 +18,7 @@ public class ProjectRequestDto implements IDto {
     private LocalDate endDate;
     private Long managerId;
     private Set<Long> teamMembers;
+    private Long organizationId;
 
 
 }

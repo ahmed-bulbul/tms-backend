@@ -4,6 +4,7 @@ import com.tms.common.generics.AbstractRepository;
 import com.tms.common.generics.AbstractSearchService;
 import com.tms.common.models.User;
 import com.tms.common.payload.response.UserResponseDto;
+import com.tms.common.service.OrganizationService;
 import com.tms.projects.dto.ProjectRequestDto;
 import com.tms.projects.dto.ProjectResponseDto;
 import com.tms.projects.dto.ProjectSearchDto;
@@ -18,8 +19,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProjectService  extends AbstractSearchService<Project, ProjectRequestDto, ProjectSearchDto> {
-    public ProjectService(AbstractRepository<Project> repository) {
+
+    private final OrganizationService organizationService;
+    public ProjectService(AbstractRepository<Project> repository, OrganizationService organizationService) {
         super(repository);
+        this.organizationService = organizationService;
     }
 
     @Override
@@ -38,6 +42,7 @@ public class ProjectService  extends AbstractSearchService<Project, ProjectReque
                 .endDate(project.getEndDate())
                 .manager(buildManager(project))
                 .teamMembers(buildTeamMembers(project))
+                .organizationId(project.getOrganization().getId())
                 .build();
     }
 
@@ -53,6 +58,7 @@ public class ProjectService  extends AbstractSearchService<Project, ProjectReque
                 .teamMembers(projectRequestDto.getTeamMembers().stream()
                         .map(userId -> User.builder().id(userId).build())
                         .collect(Collectors.toSet()))
+                .organization(organizationService.findById(projectRequestDto.getOrganizationId()))
                 .build();
     }
 

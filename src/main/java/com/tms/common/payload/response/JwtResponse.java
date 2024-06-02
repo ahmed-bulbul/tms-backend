@@ -1,6 +1,7 @@
 package com.tms.common.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.tms.common.models.Organization;
 import com.tms.configuaration.payload.response.ModuleViewModel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,7 @@ public class JwtResponse {
   private List<ModuleViewModel> defaultAccessRight;
   private Map<String, Integer> userAccessPermissions;
   private List<FeatureRoleViewModel> featureRoleViewModelList;
+  private OrganizationResponseDto organization;
 
   public JwtResponse(String accessToken, Long id, String username, String email, Set<Integer> roles,
                      List<ModuleViewModel> defaultAccessRight,Map<String, Integer> userAccessPermissions,
@@ -49,4 +51,12 @@ public class JwtResponse {
     this.roleMap = roleMap;
   }
 
+  public JwtResponse(String jwt, Long id, String username, String email, OrganizationResponseDto organization, Map<Integer, String> roleMap) {
+    this.token = jwt;
+    this.id = id;
+    this.username = username;
+    this.email = email;
+    this.roleMap = roleMap;
+    this.organization = organization;
+  }
 }

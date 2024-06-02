@@ -40,6 +40,11 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+
+    @ManyToOne
+    @JoinColumn(name = "organization_id")
+    private Organization organization;
+
     public User() {
     }
     public User(Long id, String username, String email, String password, Set<Role> roles) {
@@ -49,6 +54,17 @@ public class User {
         this.password = password;
         this.roles = roles;
     }
+
+public User(Long id, String username, String email, String password, Set<Role> roles, Organization organization) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+        this.organization = organization;
+    }
+
+
 
 
     public User(String username, String email, String password) {
@@ -95,5 +111,14 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Organization getOrganization() {
+        return organization;
+    }
+
+    public User setOrganization(Organization organization) {
+        this.organization = organization;
+        return this;
     }
 }

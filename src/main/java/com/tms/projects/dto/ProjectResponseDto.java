@@ -19,5 +19,6 @@ public class ProjectResponseDto {
     private LocalDate endDate;
     private UserResponseDto manager;
     private Set<UserResponseDto> teamMembers;
+    private Long organizationId;
 
 }

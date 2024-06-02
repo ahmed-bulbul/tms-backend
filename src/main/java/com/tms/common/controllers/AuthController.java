@@ -2,6 +2,8 @@ package com.tms.common.controllers;
 
 import java.util.*;
 
+import com.tms.common.models.Organization;
+import com.tms.common.payload.response.OrganizationResponseDto;
 import com.tms.configuaration.payload.response.ModuleViewModel;
 import com.tms.configuaration.service.IModuleService;
 import com.tms.common.payload.request.LoginRequest;
@@ -94,22 +96,34 @@ public class AuthController {
       roleMap.put(roleId,r.getName().name());
     });
 
+    // map to org response dto
+    Organization organization = userDetails.getOrganization();
+    OrganizationResponseDto orgBuilder  = OrganizationResponseDto.builder()
+            .id(organization.getId())
+            .name(organization.getName())
+            .reference(organization.getReference())
+            .orgCode(organization.getOrgCode())
+            .organizationType(organization.getOrganizationType().name())
+            .organizationTypeId(organization.getOrganizationType().getOrgId())
+            .build();
+
     return ResponseEntity.ok(new JwtResponse(jwt,
             userDetails.getId(),
             userDetails.getUsername(),
             userDetails.getEmail(),
+            orgBuilder,
             roleMap));
   }
 
   @PostMapping("/signup")
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-    if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+    if (Boolean.TRUE.equals(userRepository.existsByUsername(signUpRequest.getUsername()))) {
       return ResponseEntity
           .badRequest()
           .body(new MessageResponse("Error: Username is already taken!"));
     }
 
-    if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+    if (Boolean.TRUE.equals(userRepository.existsByEmail(signUpRequest.getEmail()))) {
       return ResponseEntity
           .badRequest()
           .body(new MessageResponse("Error: Email is already in use!"));

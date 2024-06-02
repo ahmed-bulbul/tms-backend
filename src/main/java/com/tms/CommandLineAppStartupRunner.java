@@ -1,8 +1,11 @@
 package com.tms;
 
 import com.tms.common.constant.ERole;
+import com.tms.common.models.Organization;
+import com.tms.common.models.OrganizationTypeEnum;
 import com.tms.common.models.Role;
 import com.tms.common.models.User;
+import com.tms.common.repository.OrganizationRepository;
 import com.tms.common.repository.RoleRepository;
 import com.tms.common.repository.UserRepository;
 import com.tms.configuaration.entity.WorkFlowAction;
@@ -11,12 +14,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.URL;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -31,18 +28,20 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 
     private final PasswordEncoder encoder;
 
+    private final OrganizationRepository organizationRepository;
 
 
-    public CommandLineAppStartupRunner(RoleRepository roleRepository, UserRepository userRepository, WorkFlowActionRepository workFlowActionRepository, PasswordEncoder encoder) {
+
+    public CommandLineAppStartupRunner(RoleRepository roleRepository, UserRepository userRepository, WorkFlowActionRepository workFlowActionRepository, PasswordEncoder encoder, OrganizationRepository organizationRepository) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.workFlowActionRepository = workFlowActionRepository;
         this.encoder = encoder;
+        this.organizationRepository = organizationRepository;
     }
 
     @Override
     public void run(String... args) {
-
 
 
 
@@ -70,6 +69,7 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
             Role userRole = roleRepository.findByName(roleName).orElse(null);
             roles.add(userRole);
             user.setRoles(roles);
+            user.setOrganization(organizationRepository.findById(101L).orElse(null));
             userRepository.save(user);
         }
     }

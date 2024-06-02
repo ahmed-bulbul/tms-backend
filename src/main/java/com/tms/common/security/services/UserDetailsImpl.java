@@ -3,6 +3,7 @@ package com.tms.common.security.services;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.tms.common.models.Organization;
 import com.tms.common.models.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,14 +28,17 @@ public class UserDetailsImpl implements UserDetails {
 
   private Collection<? extends GrantedAuthority> authorities;
 
+  private Organization organization;
+
   public UserDetailsImpl(Long id, String username, String email, String password,Set<Integer> roleIds,
-      Collection<? extends GrantedAuthority> authorities) {
+      Collection<? extends GrantedAuthority> authorities,Organization organization) {
     this.id = id;
     this.username = username;
     this.email = email;
     this.password = password;
     this.roleIds = roleIds;
     this.authorities = authorities;
+    this.organization = organization;
   }
 
   public static UserDetailsImpl build(User user) {
@@ -51,8 +55,9 @@ public class UserDetailsImpl implements UserDetails {
         user.getUsername(), 
         user.getEmail(),
         user.getPassword(),
-            roleIds,
-        authorities);
+        roleIds,
+        authorities,
+        user.getOrganization());
   }
 
   @Override
@@ -104,6 +109,15 @@ public class UserDetailsImpl implements UserDetails {
 
   public void setRoleIds(Set<Integer> roleIds) {
     this.roleIds = roleIds;
+  }
+
+  public Organization getOrganization() {
+    return organization;
+  }
+
+  public UserDetailsImpl setOrganization(Organization organization) {
+    this.organization = organization;
+    return this;
   }
 
   @Override

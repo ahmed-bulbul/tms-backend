@@ -1,6 +1,7 @@
 package com.tms.projects.entity;
 
 import com.tms.common.generics.AbstractDomainBasedEntity;
+import com.tms.common.models.Organization;
 import com.tms.common.models.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -35,6 +36,10 @@ public class Project extends AbstractDomainBasedEntity {
     @ManyToOne
     @JoinColumn(name = "project_manager_id", nullable = false)
     private User projectManager;
+
+    @ManyToOne
+    @JoinColumn(name = "organization_id", nullable = false)
+    private Organization organization;
 
     @ManyToMany
     @JoinTable(

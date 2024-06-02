@@ -7,4 +7,5 @@ import lombok.Data;
 public class ProjectSearchDto implements SDto {
 
     private String name;
+
 }
