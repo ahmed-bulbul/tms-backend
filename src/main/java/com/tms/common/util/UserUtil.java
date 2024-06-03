@@ -1,27 +1,25 @@
 package com.tms.common.util;
 
-import com.tms.common.models.User;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
+import org.springframework.security.core.userdetails.UserDetails;
 
+public class  UserUtil {
 
-@Component
-public class UserUtil {
-    public static User getCurrentUser() {
-        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    private UserUtil() {
+        throw new UnsupportedOperationException("Utility class");
     }
 
-    public static boolean isUserInOrganization(Long organizationId) {
-        return getCurrentUser().getOrganization().getId().equals(organizationId);
+    public static String getCurrentUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof UserDetails userDetails) {
+                return userDetails.getUsername();
+            } else {
+                return principal.toString();
+            }
+        }
+        return null;
     }
-
-    public static boolean isUserInOrganization(User user, Long organizationId) {
-        return user.getOrganization().getId().equals(organizationId);
-    }
-
-    public static Long getOrganizationId() {
-        return getCurrentUser().getOrganization().getId();
-    }
-
-
 }

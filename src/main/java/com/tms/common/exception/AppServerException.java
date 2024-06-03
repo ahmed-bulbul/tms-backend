@@ -62,4 +62,6 @@ public class AppServerException extends RuntimeException {
                 MDC.get(ApplicationConstant.TRACE_ID)
         );
     }
+
+
 }

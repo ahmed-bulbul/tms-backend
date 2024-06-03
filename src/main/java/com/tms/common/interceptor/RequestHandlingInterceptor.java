@@ -9,16 +9,17 @@ import com.tms.common.models.AccessRight;
 import com.tms.common.models.Role;
 import com.tms.common.models.User;
 import com.tms.common.security.jwt.JwtUtils;
+import com.tms.common.service.OrganizationService;
 import com.tms.common.service.UserService;
 import com.tms.common.util.Helper;
 import com.tms.common.util.NumberUtil;
+import com.tms.common.util.UserUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -35,24 +36,36 @@ public class RequestHandlingInterceptor implements HandlerInterceptor {
     private final UserService userService;
     private final JwtUtils jwtUtils;
     private final Helper helper;
+
+    private final OrganizationService organizationService;
+
     /**
      * Autowired constructor
      *
-     * @param userService {@link UserService}
-     * @param jwtUtils    {@link JwtUtils}
-     * @param helper      {@link Helper}
+     * @param userService         {@link UserService}
+     * @param jwtUtils            {@link JwtUtils}
+     * @param helper              {@link Helper}
+     * @param organizationService
      */
     @Autowired
-    public RequestHandlingInterceptor(@Lazy UserService userService, JwtUtils jwtUtils, Helper helper) {
+    public RequestHandlingInterceptor(@Lazy UserService userService, JwtUtils jwtUtils, Helper helper, OrganizationService organizationService) {
         this.userService = userService;
         this.jwtUtils = jwtUtils;
         this.helper = helper;
+        this.organizationService = organizationService;
     }
 
     @Override
     @Transactional
     public boolean preHandle(
             HttpServletRequest request, HttpServletResponse response, Object handler) {
+
+        // set organizationId on  request header
+        String userName = UserUtil.getCurrentUsername();
+        Long organizationId = prepareOrganizationId(userName);
+        request.setAttribute(ApplicationConstant.ORGANIZATION_ID, organizationId);
+
+
         MDC.put(ApplicationConstant.TRACE_ID, UUID.randomUUID().toString());
         String requestURI = helper.getRequestUri();
 
@@ -86,6 +99,12 @@ public class RequestHandlingInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
                                 Object handler, Exception exception) {
+    }
+
+    private Long prepareOrganizationId(String username) {
+        Optional<User> user = userService.findByUsername(username);
+        return user.map(value -> value.getOrganization().getId()).orElseThrow(
+                () -> AppServerException.notFound(Helper.createDynamicCode(ErrorId.DATA_NOT_FOUND,username)));
     }
 
     private void validateUserAccessPermission(User user, String requestURI, Map pathVariables, String methodType) {

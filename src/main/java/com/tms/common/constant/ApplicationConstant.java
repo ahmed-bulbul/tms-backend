@@ -143,6 +143,7 @@ public class ApplicationConstant {
     public static final String UNIT_MEASURE_ID = "uomId";
     public static final String ALTER_VOUCHER_INITIAL = "USBA/C";
     public static final String STORE = "STORE";
+    public static final String ORGANIZATION_ID = "ORGANIZATION_ID";
     /**
      * used for store user information
      */

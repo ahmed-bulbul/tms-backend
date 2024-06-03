@@ -10,4 +10,6 @@ public interface UserService {
     Optional<User> findByUsername(String username);
 
     Set<UsernameProjection> findUsernameByIdList(Set<Long> idList);
+
+    Optional<User> findById(Long userId);
 }
